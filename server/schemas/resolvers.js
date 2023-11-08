@@ -11,15 +11,22 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
+    addUser: async (parent, args) => {
+      const user = await User.create(args);
       const token = signToken(user);
       return { token, user };
     },
     login: async (parent, { email, password }) => {
+      console.log("resolver hit!");
       const user = await User.findOne({ email });
 
-      if (!user || !(await user.isCorrectPassword(password))) {
+      if (!user ) {
+        throw new AuthenticationError('Invalid email or password');
+      }
+
+      const validatePW =await user.isCorrectPassword(password);
+
+      if(!validatePW){
         throw new AuthenticationError('Invalid email or password');
       }
 
@@ -66,3 +73,5 @@ const resolvers = {
     },
   }
 };
+
+module.exports=resolvers;
