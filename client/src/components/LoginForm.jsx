@@ -28,15 +28,17 @@ const LoginForm = () => {
     }
 
     try {
+      console.log("LOGIN: attempting login", userFormData);
       const {data} = await loginUser({
         variables: {...userFormData}
       });
 
-
+      console.log("LOGIN: completed login", data);
       console.log(data)
 
-
+      console.log("LOGIN: attempting login through auth controller");
       Auth.login(data.login.token);
+      console.log("LOGIN: logged in");
     } catch (err) {
       console.error(err);
       setShowAlert(true);
