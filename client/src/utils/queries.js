@@ -8,7 +8,7 @@ export const GET_ME = gql`
       email
       savedBooks {
         _id
-        authors
+        author
         description
         bookId
       }

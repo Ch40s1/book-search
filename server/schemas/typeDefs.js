@@ -8,8 +8,8 @@ const typeDefs = `
 
   type Book {
     bookId: ID!
-    authors: [String]
-    decription: String
+    author: [String]
+    description: String
     image: String
     link: String
     title: String
@@ -28,6 +28,7 @@ const typeDefs = `
     image: String
     link: String
   }
+
 
   type Query {
     me: User
