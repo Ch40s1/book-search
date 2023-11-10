@@ -61,7 +61,6 @@ const SearchBooks = () => {
     }
   };
 
-  // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
@@ -74,21 +73,25 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBookMutation({
+      const { data } = await saveBookMutation({
         variables: { book: bookToSave },
       });
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
+      if (data && data.saveBook) {
+        // Book saved successfully
+        const savedBook = data.saveBook;
+        setSavedBookIds([...savedBookIds, savedBook.bookId]);
+      } else {
+        // Log details about the GraphQL error
+        console.error('GraphQL Error:', data.errors);
       }
-
-      const savedBook = response.data.saveBook;
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, savedBook.bookId]);
     } catch (err) {
-      console.error(err);
+      console.error('Network Error:', err.message);
     }
   };
+
+
+
 
   return (
     <>
