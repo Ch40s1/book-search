@@ -52,27 +52,29 @@ const resolvers = {
         return book;
       }
     },
-    saveBook: async (parent, { input }, context) => {
-      if (context.user) {
-        try {
-          // Create a new book based on the input
-          const newBook = await Book.create(input);
+    saveBook: async (parent, { book }, context) => {
+      try {
+        console.log(book);
 
-          // Add the new book to the user's savedBooks array
-          const updatedUser = await User.findByIdAndUpdate(
+        if (context.user) {
+          const updatedUser = await User.findOneAndUpdate(
             { _id: context.user._id },
-            { $push: { savedBooks: newBook } },
-            { new: true }
-          ).populate('savedBooks'); // Populate the savedBooks field
+            { $addToSet: { savedBooks: book } },
+            { new: true, runValidators: true }
+          );
 
+          console.log(updatedUser);
           return updatedUser;
-        } catch (err) {
-          throw new Error('Could not save the book');
         }
-      } else {
-        throw new AuthenticationError('You must be logged in to save a book');
+
+        throw new AuthenticationError('You need to be logged in!');
+      } catch (error) {
+        // Handle the error as needed
+        console.error('Error saving book:', error);
+        throw new Error('Could not save the book.');
       }
     },
+
   }
 };
 
