@@ -25,9 +25,9 @@ const SearchBooks = () => {
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
-  // useEffect(() => {
-  //   return () => saveBookIds(savedBookIds);
-  // });
+  useEffect(() => {
+    return () => saveBookIds(savedBookIds);
+  });
 
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
@@ -78,15 +78,8 @@ const SearchBooks = () => {
         variables: { book:{... bookToSave} },
 
       });
+        setSavedBookIds([...savedBookIds, bookToSave.bookId]);
 
-      if (data && data.saveBook) {
-        // Book saved successfully
-        const savedBook = data.saveBook;
-        setSavedBookIds([...savedBookIds, savedBook.bookId]);
-      } else {
-        // Log details about the GraphQL error
-        console.error('GraphQL Error:', data.errors);
-      }
     } catch (err) {
       console.error('Network Error:', err.message);
     }

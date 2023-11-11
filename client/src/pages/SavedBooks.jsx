@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Container,
   Card,
@@ -14,10 +14,9 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const { loading, error, data } = useQuery(GET_ME);
-  const [userData, setUserData] = useState({});
+  const { loading, data, error } = useQuery(GET_ME);
+  const userData = data?.me || {};
   const [removeBook] = useMutation(REMOVE_BOOK);
-  // const [saveBook] = useMutation(SAVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -42,6 +41,8 @@ const SavedBooks = () => {
     }
   };
 
+
+  console.log("userdata:" + data);
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
@@ -53,14 +54,14 @@ const SavedBooks = () => {
 
   return (
     <>
-      <div fluid className="text-light bg-dark p-5">
+      <div className="text-light bg-dark p-5">
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks.length
+          {userData.savedBooks?.length
             ? `Viewing ${userData.savedBooks.length} saved ${
                 userData.savedBooks.length === 1 ? 'book' : 'books'
               }:`
