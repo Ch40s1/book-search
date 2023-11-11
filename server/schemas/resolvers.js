@@ -45,10 +45,13 @@ const resolvers = {
         }
 
         await Book.findByIdAndDelete(bookId);
+
+        // Use $pull directly on the savedBooks array to remove the bookId
         await User.findByIdAndUpdate(
           { _id: context.user._id },
           { $pull: { savedBooks: bookId } }
         );
+
         return book;
       }
     },
