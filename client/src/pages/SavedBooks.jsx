@@ -29,9 +29,9 @@ const SavedBooks = () => {
       const { data } = await removeBook({
         variables: { bookId },
       });
-
+      console.log("bruh" + data);
       const updatedUser = data.removeBook;
-      setUserData(updatedUser);
+      userData(updatedUser);
 
       // upon success, remove book's id from localStorage
       removeBookId(bookId);

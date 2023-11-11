@@ -5,9 +5,12 @@ const resolvers = {
   Query: {
     me: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('savedBooks');
+        const userData =  User.findOne({ _id: context.user._id }).populate('savedBooks');
+        return userData
       }
+      throw AuthenticationError
     },
+
   },
 
   Mutation: {
@@ -55,6 +58,30 @@ const resolvers = {
         return book;
       }
     },
+    // removeBook: async (parent, { bookId }, context) => {
+    //   console.log("USERID",context.user?._id);
+    //   console.log("BOOKID",bookId)
+
+    //   try {
+    //      if (context.user) {
+    //     const updatedUser = await User.findOneAndUpdate(
+    //       { _id: context.user._id },
+    //       { $pull: { savedBooks: { bookId } } },
+    //       { new: true }
+    //     ).exec()
+
+    //       console.log("updated user", updatedUser);
+    //     return updatedUser;
+    //   }
+    //   if (!updatedUser) {
+    //     console.log(" no user found or book not removed");
+    //     throw new Error("no use found or book not removed")
+    //   }
+    //   } catch (error) {
+    //     console.error(error.msg)
+    //   }
+
+    // },
     saveBook: async (parent, { book }, context) => {
       try {
         console.log(book);
