@@ -37,7 +37,8 @@ To use the website:
 Thanks to bootcamp support AskBCS. They were big help.
 
 ![websiteImage](./client/src/assets/Screenshot%202023-11-11%20at%201.51.15%20PM.png)
-### <a href="https://cybermart1-76e7c43ac326.herokuapp.com/">Website Link</a>
+
+### <a href="https://booksearch18-57fa32329167.herokuapp.com/" target="_blank">Website Link</a>
 
 
 ## License
